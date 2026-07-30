@@ -1,0 +1,9 @@
+[project]
+name = "rag-pipeline"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: requires live external credentials (e.g. Pinecone)",
+]
