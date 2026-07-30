@@ -6,6 +6,9 @@ from app.api.deps import get_ingestion_pipeline, get_rag_pipeline
 from app.api.routes_health import router as health_router
 from app.api.routes_ingest import router as ingest_router
 from app.api.routes_query import router as query_router
+from app.logging_config import configure_logging
+
+configure_logging()
 
 
 @asynccontextmanager
