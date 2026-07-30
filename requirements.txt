@@ -5,7 +5,8 @@ pydantic-settings>=2.6,<3.0
 python-multipart>=0.0.12
 sentence-transformers>=3.2,<4.0
 transformers>=4.45,<5.0
-torch>=2.4,<3.0
+torch>=2.2,<3.0
+numpy<2.0
 pinecone>=5.3,<6.0
 openai>=1.54,<2.0
 pypdf>=5.0,<6.0
