@@ -29,5 +29,8 @@ COPY app ./app
 RUN useradd -m -u 1000 appuser && chown -R appuser /app
 USER appuser
 
+# Default to 7860 (Hugging Face Spaces' fixed port) but respect $PORT when the platform
+# assigns one instead (Render, Railway, Cloud Run, etc.) — shell form so the substitution
+# actually happens; JSON-array CMD form doesn't expand environment variables.
 EXPOSE 7860
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-7860}
