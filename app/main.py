@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.api.deps import get_ingestion_pipeline, get_rag_pipeline
 from app.api.routes_health import router as health_router
@@ -26,3 +27,7 @@ app = FastAPI(title="Multi-tenant RAG Pipeline", lifespan=lifespan)
 app.include_router(health_router)
 app.include_router(ingest_router)
 app.include_router(query_router)
+
+# Registered last: a catch-all, so it never shadows the API routes above or FastAPI's own
+# /docs, /redoc, /openapi.json (added inside FastAPI.__init__, before this module runs).
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")

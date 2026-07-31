@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RAG Chat</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1>RAG Chat</h1>
+      <label class="tenant-field">
+        <span>Tenant</span>
+        <input id="tenant-input" type="text" spellcheck="false" pattern="^[a-zA-Z0-9_-]{1,64}$" />
+      </label>
+    </header>
+
+    <main id="thread" class="thread" aria-live="polite"></main>
+
+    <form id="composer" class="composer">
+      <input id="file-input" type="file" accept=".pdf,.docx,.txt,.xlsx" hidden />
+      <button id="attach-btn" type="button" class="icon-btn" title="Attach a document">📎</button>
+      <input id="question-input" type="text" placeholder="Ask a question about your documents…" autocomplete="off" />
+      <button id="send-btn" type="submit">Send</button>
+    </form>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
