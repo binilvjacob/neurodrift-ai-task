@@ -1,3 +1,13 @@
+---
+title: Multi-tenant RAG Pipeline
+emoji: 📚
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Multi-tenant RAG Pipeline
 
 A Retrieval-Augmented Generation pipeline that answers questions from a per-tenant knowledge
@@ -127,3 +137,24 @@ oversights:
 Every ingest and query request emits one structured JSON log line (`tenant_id`, `question` or
 `document_id`/filename, chunk ids with scores, the `grounded` flag, and latency in ms), on a
 dedicated `rag` logger namespace kept separate from uvicorn's own logging config.
+
+## Deploying (Hugging Face Spaces)
+
+The `Dockerfile` builds a self-contained image (the embedding model and tokenizer are
+downloaded once at *build* time, not on every cold start) and listens on port 7860, matching
+Spaces' Docker SDK default. This repo's `README.md` frontmatter (the block at the very top) is
+already configured for `sdk: docker`.
+
+1. Create a new Space at huggingface.co/new-space, SDK = **Docker**.
+2. Push this repo to the Space's git remote (`git remote add space <space-git-url>`, then
+   `git push space develop:main`).
+3. In the Space's **Settings → Variables and secrets**, add every variable from `.env.example`
+   as a secret — `PINECONE_API_KEY`, `PINECONE_INDEX_NAME`, `HF_TOKEN`, etc.
+4. The Space builds and boots automatically. `/docs` is reachable at the Space's public URL once
+   it's up.
+
+Two things worth knowing: free-tier Spaces sleep after inactivity, so the first request after a
+period of idleness pays both the Space's own wake-up time and this app's ~20–30s eager startup
+(building the embedder, chunker, Pinecone client, and LLM client before accepting traffic — see
+above). And there's no auth in front of any of this (see "Deliberate limitations"), so a publicly
+reachable Space is reachable by anyone with the URL, not just intended evaluators.
